@@ -1,0 +1,33 @@
+# =========================
+# Computer Vision / AI
+# =========================
+ultralytics
+opencv-python
+numpy
+
+# =========================
+# Machine Learning
+# =========================
+scikit-learn
+joblib
+xgboost
+pandas
+
+# =========================
+# Web Application
+# =========================
+fastapi
+uvicorn[standard]
+pydantic
+
+# =========================
+# Training / Evaluation
+# =========================
+matplotlib
+imbalanced-learn
+
+# =========================
+# Development / Notebook
+# =========================
+ipykernel
+pytest
