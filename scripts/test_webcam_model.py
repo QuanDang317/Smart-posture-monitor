@@ -241,6 +241,7 @@ def run_webcam(
     yolo_path: Path | None,
     calibration_samples: int,
     show_pose: bool,
+    device: str | None = None,
 ) -> None:
     """Chạy integration test realtime cho toàn bộ inference pipeline V03."""
     print_startup_guide(calibration_samples)
@@ -251,6 +252,12 @@ def run_webcam(
         yolo_path=yolo_path,
         calibration_samples=calibration_samples,
     )
+
+    # ``device`` là tùy chọn của PoseDetector, không phải tham số
+    # khởi tạo của PostureInferenceEngine. Engine đã tự chọn thiết bị
+    # khi device là None/auto; chỉ ghi đè khi CLI yêu cầu rõ ràng.
+    if device not in (None, "auto"):
+        engine.detector.device = device
 
     capture = cv2.VideoCapture(camera_index)
 
@@ -403,6 +410,13 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--device",
+        type=str,
+        default=None,
+        help="Device để chạy YOLO Pose: 'cpu', 'cuda', hoặc None/auto (tự động fallback về CPU nếu CUDA không tương thích).",
+    )
+
+    parser.add_argument(
         "--check-only",
         action="store_true",
         help="Chỉ kiểm tra model/metadata REP13, không mở webcam.",
@@ -453,6 +467,7 @@ def main() -> None:
         yolo_path=yolo_path,
         calibration_samples=args.calibration_samples,
         show_pose=not args.no_pose,
+        device=args.device,
     )
 
 
